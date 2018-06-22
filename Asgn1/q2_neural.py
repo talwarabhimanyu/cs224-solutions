@@ -51,7 +51,7 @@ def forward_backward_prop(X, labels, params, dimensions):
     dJ_by_dh2[labels == 1] -= 1.0
     gradW2 = np.matmul(h1.T, dJ_by_dh2)
     gradb2 = np.sum(dJ_by_dh2, axis=0)
-    temp = sigmoid_grad(h1)*np.matmul(dj_by_dh2, W2.T)  # M x H
+    temp = sigmoid_grad(h1)*np.matmul(dJ_by_dh2, W2.T)  # M x H
     gradW1 = np.matmul(X.T, temp)                       # Dx x H
     gradb1 = np.sum(temp.T, axis=1)
     ### END YOUR CODE
@@ -59,7 +59,6 @@ def forward_backward_prop(X, labels, params, dimensions):
     ### Stack gradients (do not modify)
     grad = np.concatenate((gradW1.flatten(), gradb1.flatten(),
         gradW2.flatten(), gradb2.flatten()))
-
     return cost, grad
 
 
@@ -74,7 +73,7 @@ def sanity_check():
     dimensions = [10, 5, 10]
     data = np.random.randn(N, dimensions[0])   # each row will be a datum
     labels = np.zeros((N, dimensions[2]))
-    for i in xrange(N):
+    for i in range(N):
         labels[i, random.randint(0,dimensions[2]-1)] = 1
 
     params = np.random.randn((dimensions[0] + 1) * dimensions[1] + (
@@ -93,7 +92,7 @@ def your_sanity_checks():
     """
     print("Running your sanity checks...")
     ### YOUR CODE HERE
-    raise NotImplementedError
+    #raise NotImplementedError
     ### END YOUR CODE
 
 
