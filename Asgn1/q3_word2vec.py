@@ -92,16 +92,23 @@ def negSamplingCostAndGradient(predicted, target, outputVectors, dataset,
 
     Arguments/Return Specifications: same as softmaxCostAndGradient
     """
-
     # Sampling of indices is done for you. Do not modify this if you
     # wish to match the autograder and receive points!
     indices = [target]
     indices.extend(getNegativeSamples(target, dataset, K))
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    u_vecs = outputVectors[indices, :]  
+    u_vecs[1:len(indices), :] *= -1
+    probs = sigmoid(np.matmul(u_vecs, predicted))
+    cost = -np.sum(np.log(probs))
+    gradPred = np.sum((-u_vecs)*(1 - probs).reshape(probs.shape[0], 1), axis = 0)
+    grad = np.zeros(outputVectors.shape)
+    temp_matrix = np.matmul((1 - probs).reshape(probs.shape[0], 1), predicted.reshape(predicted.shape[0], 1).T)
+    temp_matrix[0, :] *= -1
+    for i, idx in enumerate(indices):
+        grad[idx] += temp_matrix[i, :]
     ### END YOUR CODE
-
     return cost, gradPred, grad
 
 
@@ -162,7 +169,7 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    #raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
