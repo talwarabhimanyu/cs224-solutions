@@ -2,3 +2,5 @@ private*
 __MACOSX
 *.swp
 *.pyc
+*.npy
+datasets/
