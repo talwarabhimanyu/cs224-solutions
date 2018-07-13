@@ -1,3 +1,5 @@
+import copy
+
 class PartialParse(object):
     def __init__(self, sentence):
         """Initializes this partial parse.
@@ -22,7 +24,7 @@ class PartialParse(object):
 
         ### YOUR CODE HERE
         self.stack = ['ROOT']
-        self.buffer = self.sentence
+        self.buffer = copy.deepcopy(self.sentence)
         self.dependencies = []
         ### END YOUR CODE
 
@@ -78,6 +80,18 @@ def minibatch_parse(sentences, model, batch_size):
     """
 
     ### YOUR CODE HERE
+    # Intiialize partial_parses, a list of partial parses for each sentence in sentences
+    partial_parses = [PartialParse(sentence) for sentence in sentences]
+    # Create a shallow copy of partial_parses - each element of the shallow copy is a reference
+    # to original object in partial_parses
+    unfinished_parses = copy.copy(partial_parses)
+    while unfinished_parses:
+        transitions = model.predict(unfinished_parses[0:batch_size])
+        for i, p in enumerate(unfinished_parses[0:batch_size]):
+            p.parse_step(transitions[i])
+            if ((not p.buffer) and (len(p.stack) == 1)):
+                del unfinished_parses[i]
+    dependencies = [p.dependencies for p in partial_parses]
     ### END YOUR CODE
 
     return dependencies
@@ -165,5 +179,5 @@ def test_minibatch_parse():
 
 if __name__ == '__main__':
     test_parse_step()
-    #test_parse()
-    #test_minibatch_parse()
+    test_parse()
+    test_minibatch_parse()
