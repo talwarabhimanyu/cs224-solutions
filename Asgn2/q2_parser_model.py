@@ -215,7 +215,7 @@ class ParserModel(Model):
             #if (i+1 == n_minibatches):
             #    prog.update(i + 1, [("train loss", loss)])
 
-        print("Evaluating on dev set")
+        print("\nEvaluating on dev set")
         dev_UAS, _ = parser.parse(dev_set)
         print("- dev UAS: {:.2f}".format(dev_UAS * 100.0))
         return dev_UAS
@@ -238,7 +238,7 @@ class ParserModel(Model):
         self.build()
 
 
-def main(debug=True):
+def main(debug=False):
     print(80 * "=")
     print("INITIALIZING")
     print(80 * "=")

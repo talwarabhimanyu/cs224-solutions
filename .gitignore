@@ -3,5 +3,6 @@ __MACOSX
 *.swp
 *.pyc
 *.npy
+*.pkl
 datasets/
 data/
